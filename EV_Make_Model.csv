@@ -1,0 +1,14 @@
+﻿Make,Model,Connector,Level 1,Level 2,DC
+Nissan,Leaf,CHAdeMO,,,Y
+Tesla,Model 3,Tesla,,Y,Y
+Tesla,Model X,Tesla,,Y,Y
+Chevrolet,Bolt,J1772,Y,Y,
+Chevrolet,Bolt,CCS,,,Y
+BMW,i4,J1772,Y,Y,
+BMW,i4,CCS,,,Y
+Volkswagen,ID.4,J1772,,Y,
+Volkswagen,ID.5,CCS,,,Y
+Audi,Q6 e-tron,J1772,Y,Y,
+Audi,Q6 e-tron,CCS,,,Y
+Hyundai,Kona,J1772,Y,Y,
+Hyundai,Kona,CCS,,,Y
