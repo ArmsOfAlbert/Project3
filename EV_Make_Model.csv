@@ -1,14 +1,14 @@
-﻿Make,Model,Connector,Level 1,Level 2,DC,Charge Per Distance,Car Price
-Nissan,Leaf,CHAdeMO,,,Y,215 miles,"$28,140 "
-Tesla,Model 3,Tesla,,Y,Y,341 miles,"$40,630 "
-Tesla,Model X,Tesla,,Y,Y,335 miles,"$79,990 "
-Chevrolet,Bolt,J1772,Y,Y,,259 miles,"$26,500 "
-Chevrolet,Bolt,CCS,,,Y,259 miles,"$26,500 "
-BMW,i4,J1772,Y,Y,,307 miles,"$60,200 "
-BMW,i4,CCS,,,Y,307 miles,"$60,200 "
-Volkswagen,ID.4,J1772,,Y,,291 miles,"$41,160 "
-Volkswagen,ID.5,CCS,,,Y,291 miles,"$41,160 "
-Audi,Q4 e-tron,J1772,Y,Y,,265 miles,"$50,995 "
-Audi,Q4 e-tron,CCS,,,Y,265 miles,"$50,995 "
-Hyundai,Kona,J1772,Y,Y,,261 miles,"$32,675 "
-Hyundai,Kona,CCS,,,Y,261 miles,"$32,675 "
+﻿Make,Model,Connector,Level 1,Level 2,DC
+Nissan,Leaf,CHAdeMO,,,Y
+Tesla,Model 3,Tesla,,Y,Y
+Tesla,Model X,Tesla,,Y,Y
+Chevrolet,Bolt,J1772,Y,Y,
+Chevrolet,Bolt,CCS,,,Y
+BMW,i4,J1772,Y,Y,
+BMW,i4,CCS,,,Y
+Volkswagen,ID.4,J1772,,Y,
+Volkswagen,ID.5,CCS,,,Y
+Audi,Q6 e-tron,J1772,Y,Y,
+Audi,Q6 e-tron,CCS,,,Y
+Hyundai,Kona,J1772,Y,Y,
+Hyundai,Kona,CCS,,,Y

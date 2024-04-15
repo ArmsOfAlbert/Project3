@@ -78,9 +78,13 @@ fetch('../resource/final_merged_data.json')
        .attr('y', height + 20)
        .attr('font-size', '12px')
        .attr('text-anchor', 'middle');
+
+
+       
     // Get unique states and cities from the data
     const states = [...new Set(data.map(entry => entry.State))];
     const citiesByState = {}; // Object to store cities by state
+    states.sort();
 
     // Populate the state dropdown
     const stateDropdown = document.getElementById('state');
@@ -93,6 +97,7 @@ fetch('../resource/final_merged_data.json')
       // Find cities for each state
       const citiesForState = [...new Set(data.filter(entry => entry.State === state).map(entry => entry.City))];
       citiesByState[state] = citiesForState;
+      citiesForState.sort();
     });
 
     // Add event listener to state dropdown
