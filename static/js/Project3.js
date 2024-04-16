@@ -117,10 +117,15 @@ stateDropdown.addEventListener('change', () => {
 
 
     // Sample data of charging stations (replace with your own data)
-  const chargingStations = data.map(station => ({
-    latitude: station.Latitude,
-    longitude: station.Longitude
-    }));
+    const chargingStations = data.map(station => ({
+      latitude: station.Latitude,
+      longitude: station.Longitude,
+      title: station.Title,
+      city: station.City,
+      state: station.State,
+      address: station.Address,
+      number: station.Phone_Number
+      }));
 
     // Initialize map with default center and zoom level
   const map = L.map('map').setView([40.7128, -74.0060], 10);
@@ -138,7 +143,9 @@ stateDropdown.addEventListener('change', () => {
     // Add markers for each charging station
   chargingStations.forEach(station => {
       const { latitude, longitude } = station;
-      const marker = L.marker([latitude, longitude]);
+      const marker = L.marker([latitude, longitude])
+      .bindPopup("<h3>Station Name: " + station.title + "<h3><h3>Address: " + station.address +
+      + ", " + station.city + ", " + station.state + "<h3><h3>Phone Number: " + station.number + "</h3>");
       markers.addLayer(marker);
     });
    map.addLayer(markers); 
