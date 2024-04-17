@@ -24,7 +24,7 @@ fetch('../resource/final_merged_data.json')
     const top10States = statesArray.slice(0, 10);
 
     // Create a bar chart
-    const margin = { top: 20, right: 30, bottom: 60, left: 60 };
+    const margin = { top: 20, right: 30, bottom: 40, left: 65 };
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -80,6 +80,20 @@ fetch('../resource/final_merged_data.json')
        .attr('font-size', '12px')
        .attr('text-anchor', 'middle');
 
+    // Add x-axis title
+    svg.append('text')
+      .attr('x', width / 2)
+      .attr('y', height + margin.top + 20)
+      .attr('text-anchor', 'middle')
+      .text('States');
+    // Add y-axis title
+    svg.append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height / 2)
+      .attr('y', -margin.left)
+      .attr('dy', '1em')
+      .attr('text-anchor', 'middle')
+      .text('Number of Charging Stations');
 
        
  // Get unique states and cities from the data
@@ -161,8 +175,8 @@ openStreetMapLayer.addTo(map);
   chargingStations.forEach(station => {
       const { latitude, longitude } = station;
       const marker = L.marker([latitude, longitude])
-      .bindPopup("<h3>Station Name: " + station.title + "<h3><h3>Address: " + station.address +
-      + ", " + station.city + ", " + station.state + "<h3><h3>Phone Number: " + station.number + "</h3>");
+      .bindPopup("<h5>Station Name: " + station.title + "<h5><h5>Address: " + station.address +
+      + ", " + station.city + ", " + station.state + "<h5><h5>Phone Number: " + station.number + "</h5>");
       markers.addLayer(marker);
       heatMapData.push([latitude, longitude]);
     });
