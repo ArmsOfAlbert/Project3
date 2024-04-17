@@ -2,6 +2,7 @@
 fetch('../resource/final_merged_data.json')
   .then(response => response.json())
   .then(data => {
+    console.log(data);
     // Count the number of charging stations for each state
     const statesCount = {};
     data.forEach(entry => {
@@ -130,15 +131,31 @@ stateDropdown.addEventListener('change', () => {
     // Initialize map with default center and zoom level
   const map = L.map('map').setView([40.7128, -74.0060], 10);
 
-    // Add tile layer (e.g., OpenStreetMap)
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-  }).addTo(map);
+ // Create tile layers for OpenStreetMap and OpenTopoMap
+const openStreetMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+});
+
+const openTopoMapLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenTopoMap contributors'
+});
+
+// Add OpenStreetMap layer by default
+openStreetMapLayer.addTo(map);
 
 
-// Create a marker cluster group
+   // Create a base layers object
+   const baseLayers = {
+    "OpenStreetMap": openStreetMapLayer,
+    "OpenTopoMap": openTopoMapLayer
+  };
+  
+
+  // Create a marker cluster group
   const markers = L.markerClusterGroup();
 
+  // Create an array to hold heatmap data
+  const heatMapData = [];
 
     // Add markers for each charging station
   chargingStations.forEach(station => {
@@ -147,17 +164,36 @@ stateDropdown.addEventListener('change', () => {
       .bindPopup("<h3>Station Name: " + station.title + "<h3><h3>Address: " + station.address +
       + ", " + station.city + ", " + station.state + "<h3><h3>Phone Number: " + station.number + "</h3>");
       markers.addLayer(marker);
+      heatMapData.push([latitude, longitude]);
     });
-   map.addLayer(markers); 
+
+    // Create the heatmap layer
+const heat = L.heatLayer(heatMapData, { radius: 25 });
+
+// Add the marker cluster group to the map
+map.addLayer(markers);
+
+// Add the heatmap layer to the map
+heat.addTo(map);
+
+
+  // Create overlay layers object to switch between markers and heatmap
+  const overlayLayers = {
+    "Markers": markers,
+    "Heatmap": heat
+};
+
+// Add layer control to switch between base layers and overlay layers
+L.control.layers(baseLayers, overlayLayers, {collapsed: false}).addTo(map);
+
 
   })
-
 
 
  
 
 
-  .catch(error => console.error('Error loading JSON:', error));
+.catch(error => console.error('Error loading JSON:', error));
 
 // Define a variable with your message
 const myMessage = "Hello from JavaScript!";
