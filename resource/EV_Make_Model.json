@@ -1,0 +1,82 @@
+[
+    {
+        "Make":"Nissan",
+        "Model":"Leaf",
+        "Connector":"CHAdeMO",
+        "Level 1":"N",
+        "Level 2":"N",
+        "DC":"Y",
+        "Charge Per Distance":"215 miles",
+        "Car Price":"$28,140.00"
+    },
+    {
+        "Make":"Tesla",
+        "Model":"Model 3",
+        "Connector":"Tesla",
+        "Level 1":"N",
+        "Level 2":"Y",
+        "DC":"Y",
+        "Charge Per Distance":"341 miles",
+        "Car Price":"$40,630.00"
+    },
+    {
+        "Make":"Tesla",
+        "Model":"Model X",
+        "Connector":"Tesla",
+        "Level 1":"N",
+        "Level 2":"Y",
+        "DC":"Y",
+        "Charge Per Distance":"335 miles",
+        "Car Price":"$79,990.00"
+    },
+    {
+        "Make":"Chevrolet",
+        "Model":"Bolt",
+        "Connector":"J1772, CCS",
+        "Level 1":"Y",
+        "Level 2":"Y",
+        "DC":"Y",
+        "Charge Per Distance":"259 miles",
+        "Car Price":"$26,500.00"
+    },
+    {
+        "Make":"BMW",
+        "Model":"i4",
+        "Connector":"J1772, CCS",
+        "Level 1":"Y",
+        "Level 2":"Y",
+        "DC":"Y",
+        "Charge Per Distance":"307 miles",
+        "Car Price":"$60,200.00"
+    },
+    {
+        "Make":"Volkswagen",
+        "Model":"ID.4",
+        "Connector":"J1772, CCS",
+        "Level 1":"N",
+        "Level 2":"Y",
+        "DC":"Y",
+        "Charge Per Distance":"291 miles",
+        "Car Price":"$41,160.00"
+    },
+    {
+        "Make":"Audi",
+        "Model":"Q6 e-tron",
+        "Connector":"J1772, CCS",
+        "Level 1":"Y",
+        "Level 2":"Y",
+        "DC":"Y",
+        "Charge Per Distance":"265 miles",
+        "Car Price":"$50,995.00"
+    },
+    {
+        "Make":"Hyundai",
+        "Model":"Kona",
+        "Connector":"J1772, CCS",
+        "Level 1":"Y",
+        "Level 2":"Y",
+        "DC":"Y",
+        "Charge Per Distance":"261 miles",
+        "Car Price":"$32,675.00"
+    }
+]

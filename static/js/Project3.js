@@ -170,11 +170,16 @@ openStreetMapLayer.addTo(map);
 
   // Create an array to hold heatmap data
   const heatMapData = [];
-
+  const customIcon = L.icon({
+    iconUrl: '../resource/lightblack.png',
+    iconSize: [60, 60], // Size of the icon
+    iconAnchor: [16, 32], // Point of the icon which will correspond to marker's location
+    popupAnchor: [0, -32] // Point from which the popup should open relative to the iconAnchor
+  });
     // Add markers for each charging station
   chargingStations.forEach(station => {
       const { latitude, longitude } = station;
-      const marker = L.marker([latitude, longitude])
+      const marker = L.marker([latitude, longitude],{icon:customIcon})
       .bindPopup("<h5>Station Name: " + station.title + "<h5><h5>Address: " + station.address +
       + ", " + station.city + ", " + station.state + "<h5><h5>Phone Number: " + station.number + "</h5>");
       markers.addLayer(marker);
@@ -199,6 +204,146 @@ heat.addTo(map);
 
 // Add layer control to switch between base layers and overlay layers
 L.control.layers(baseLayers, overlayLayers, {collapsed: false}).addTo(map);
+
+
+function updatePieChart(selectedState,selectedCity){
+  const filteredData = data.filter(entry => entry.State === selectedState && entry.City === selectedCity);
+  console.log('filtered Data', filteredData);
+      // Retrieve the latitude and longitude of the first entry (assuming all entries are in the same area)
+  const latitude = filteredData[0].Latitude;
+  const longitude = filteredData[0].Longitude;
+
+// Move the map to the selected city's coordinates
+  map.setView([latitude, longitude], 12); // Adjust the zoom level as needed
+// Group data by city and state and calculate total charging levels
+  //const cityStateData = {};
+  const accessCodeCounts ={};
+  filteredData.forEach(entry => {
+    const accessCode = entry['Facility Type'];
+    //const key = `${entry.City}, ${entry.State}`;
+    if (!accessCodeCounts[accessCode]) {
+      accessCodeCounts[accessCode] = 1;
+    } 
+    accessCodeCounts[accessCode]++
+    //cityStateData[key].chargingLevels += parseInt(entry['Charging Levels',10]);
+  });
+  //Calculate Total
+  const total = Object.values(accessCodeCounts).reduce((acc, cur) => acc + cur, 0);
+
+  //Merge Categories with less than 3 percent
+  Object.entries(accessCodeCounts).forEach(([code, count]) => {
+    if ((count / total) < 0.03) {
+        accessCodeCounts['OTHER'] = (accessCodeCounts['Other'] || 0) + count;
+        delete accessCodeCounts[code];
+    }
+});  
+
+// Convert data to array format for D3 pie chart
+  const pieData = Object.entries(accessCodeCounts).map(([code, count]) => ({ code, count }));
+
+  //const pieData = Object.values(cityStateData);
+  d3.select('#pie-chart').selectAll('*').remove();
+// Define dimensions for the pie chart
+  const Pwidth = 800;
+  const Pheight = 600;
+  const radius = Math.min(Pwidth, Pheight) / 2;
+
+// Define colors for the pie chart
+  const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+
+  const Psvg = d3.select('#pie-chart')
+    .append('svg')
+    .attr('width', Pwidth)
+    .attr('height', Pheight)
+    .append('g')
+    .attr('transform', `translate(${Pwidth / 2}, ${Pheight / 2})`);
+
+// Define pie layout
+  const pie = d3.pie()
+    .value(d => d.count);
+
+// Generate pie chart arcs
+  const arc = d3.arc()
+    .outerRadius(radius*.7)
+    .innerRadius(0);
+
+// Create pie slices
+  const arcs = Psvg.selectAll('arc')
+    .data(pie(pieData))
+    .enter()
+    .append('g')
+    .attr('class', 'arc');
+
+// Draw pie slices
+  arcs.append('path')
+    .attr('d', arc)
+    .attr('fill', (d, i) => color(i));
+
+// Add labels to pie slices
+  arcs.append('text')
+    .attr('transform', d => {
+      const pos = arc.centroid(d);
+      const midAngle = Math.atan2(pos[1], pos[0]);
+    // Move the labels away from the center of the pie chart
+      const x = radius * 0.7 * Math.cos(midAngle);
+      const y = radius * 0.7 * Math.sin(midAngle);
+      return `translate(${x}, ${y})`;
+})            
+    .attr('text-anchor', d => {
+      const pos =arc.centroid(d);
+      return (pos[0] > 0) ? 'start' : 'end';
+
+    })
+    .attr('font-size', '24px')
+    .style('font-weight', 'bold') 
+    .text(d => d.data.code);
+    //.text(d => `${d.data.city}, ${d.data.state}`);
+    console.log(chargingStations);
+
+
+// Add lines pointing to pie slices
+  arcs.append('line')
+    .attr('x1', d => arc.centroid(d)[0])
+    .attr('y1', d => arc.centroid(d)[1])
+    .attr('x2', d => {
+      const pos = arc.centroid(d);
+      const midAngle = Math.atan2(pos[1], pos[0]);
+      const x = radius *.7* Math.cos(midAngle);
+      return x;
+})
+    .attr('y2', d => {
+      const pos = arc.centroid(d);
+      const midAngle = Math.atan2(pos[1], pos[0]);
+      const y = radius *.7* Math.sin(midAngle);
+      return y;
+})
+  .attr('stroke', 'black')
+  .attr('stroke-width', 2);
+
+
+
+
+}
+
+
+const cityDropdown = document.getElementById('city');
+stateDropdown.addEventListener('change', () => {
+const selectedState = stateDropdown.value;
+const selectedCity = cityDropdown.value;
+updatePieChart(selectedState, selectedCity);
+console.log('Filtered Data:', filteredData);
+
+});
+
+cityDropdown.addEventListener('change', () => {
+const selectedState = stateDropdown.value;
+const selectedCity = cityDropdown.value;
+updatePieChart(selectedState, selectedCity);
+});
+
+
+
 
 
   })
