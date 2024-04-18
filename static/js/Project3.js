@@ -139,7 +139,8 @@ stateDropdown.addEventListener('change', () => {
       city: station.City,
       state: station.State,
       address: station.Address,
-      number: station.Phone_Number
+      number: station.Phone_Number,
+      pricing: station.Pricing
       }));
 
     // Initialize map with default center and zoom level
@@ -181,7 +182,7 @@ openStreetMapLayer.addTo(map);
       const { latitude, longitude } = station;
       const marker = L.marker([latitude, longitude],{icon:customIcon})
       .bindPopup("<h5>Station Name: " + station.title + "<h5><h5>Address: " + station.address +
-      + ", " + station.city + ", " + station.state + "<h5><h5>Phone Number: " + station.number + "</h5>");
+      + ", " + station.city + ", " + station.state + "<h5><h5>Phone Number: " + station.number +"<h5>Price: " + station.pricing + "</h5>");
       markers.addLayer(marker);
       heatMapData.push([latitude, longitude]);
     });
@@ -244,8 +245,8 @@ function updatePieChart(selectedState,selectedCity){
   //const pieData = Object.values(cityStateData);
   d3.select('#pie-chart').selectAll('*').remove();
 // Define dimensions for the pie chart
-  const Pwidth = 800;
-  const Pheight = 600;
+  const Pwidth = 600;
+  const Pheight = 400;
   const radius = Math.min(Pwidth, Pheight) / 2;
 
 // Define colors for the pie chart
@@ -295,10 +296,10 @@ function updatePieChart(selectedState,selectedCity){
       return (pos[0] > 0) ? 'start' : 'end';
 
     })
-    .attr('font-size', '24px')
+    .attr('font-size', '16px')
     .style('font-weight', 'bold') 
     .text(d => d.data.code);
-    //.text(d => `${d.data.city}, ${d.data.state}`);
+    
     console.log(chargingStations);
 
 
@@ -344,8 +345,67 @@ updatePieChart(selectedState, selectedCity);
 
 
 
+function updateConnectorTable(selectedState, selectedCity) {
+  const filteredData = data.filter(entry => entry.State === selectedState && entry.City === selectedCity);
+  const connectorCounts = {};
+  filteredData.forEach(entry => {
+      const connectorType = entry['Connector Type'];
+      connectorCounts[connectorType] = (connectorCounts[connectorType] || 0) + 1;
+  });
 
+  // Convert data to an array of objects for DataTables
+  const tableData = Object.entries(connectorCounts).map(([connectorType, count]) => ({
+      'Connector Type': connectorType,
+      'Count': count
+  }));
 
+  // Initialize DataTable
+  $('#connector-table').DataTable({
+      data: tableData,
+      destroy: true, // Destroy existing table before re-initializing
+      columns: [
+          { data: 'Connector Type' },
+          { data: 'Count' }
+      ]
+  });
+}
+
+// Call the updateConnectorTable function whenever the state dropdown changes
+stateDropdown.addEventListener('change', () => {
+  const selectedState = stateDropdown.value;
+  const selectedCity = cityDropdown.value;
+  updateConnectorTable(selectedState, selectedCity);
+});
+
+// Call the updateConnectorTable function whenever the city dropdown changes
+cityDropdown.addEventListener('change', () => {
+  const selectedState = stateDropdown.value;
+  const selectedCity = cityDropdown.value;
+  updateConnectorTable(selectedState, selectedCity);
+});
+
+    // Define a function to update the message
+    function updateMessage(city, state, count) {
+      const message = `In ${city}, ${state}, there are ${count} charging stations.`;
+      const messageDiv = document.getElementById('message');
+      messageDiv.textContent = message;
+    }
+
+    // Function to update the message when city or state selection changes
+    function updateMessageOnSelectionChange() {
+      const selectedCity = document.getElementById('city').value;
+      const selectedState = document.getElementById('state').value;
+      const filteredData = data.filter(entry => entry.City === selectedCity && entry.State === selectedState);
+      const count = filteredData.length;
+      updateMessage(selectedCity, selectedState, count);
+    }
+
+    // Add event listeners to city and state dropdowns
+    document.getElementById('city').addEventListener('change', updateMessageOnSelectionChange);
+    document.getElementById('state').addEventListener('change', updateMessageOnSelectionChange);
+
+    // Call the updateMessage function initially to display the message based on the default selection
+    updateMessageOnSelectionChange();
   })
 
 
