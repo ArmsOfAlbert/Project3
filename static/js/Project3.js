@@ -182,7 +182,7 @@ openStreetMapLayer.addTo(map);
       const { latitude, longitude } = station;
       const marker = L.marker([latitude, longitude],{icon:customIcon})
       .bindPopup("<h5>Station Name: " + station.title + "<h5><h5>Address: " + station.address +
-      + ", " + station.city + ", " + station.state + "<h5><h5>Phone Number: " + station.number +"<h5>Price: " + station.pricing + "</h5>");
+      ", " + station.city + ", " + station.state + "<h5><h5>Phone Number: " + station.number +"<h5>Price: " + station.pricing + "</h5>");
       markers.addLayer(marker);
       heatMapData.push([latitude, longitude]);
     });
