@@ -11,9 +11,12 @@ Imagine: You just purchased your first EV vehicle, and unlike gas stations that'
 
 Interactive map of marked charging stations with address and phone number. Additional visualizations includes following:
 * top 10 states with most ev charging stations
+    ![top 10 states with most ev charging stations](https://github.com/ArmsOfAlbert/Project3/blob/main/resource/top10.png)
 * an info panel of EV car makes and models
+    ![EV Cars](https://github.com/ArmsOfAlbert/Project3/blob/main/resource/car_make_model.png)
 * drop down selection to search by state and city, narrowing map view to selected location
 * filtering on map to show marked locations, heat map, change map view from street to topographical
+    ![map with popup](https://github.com/ArmsOfAlbert/Project3/blob/main/resource/mapmarkers.png)
 
 Data collection, cleanup, and updates were made on Jupyter notebook `Project3.ipynb`.
 
